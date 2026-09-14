@@ -142,7 +142,7 @@ export default function Home() {
               className="group block overflow-hidden rounded-xl border border-border bg-surface transition-colors duration-300 hover:border-blue/30"
             >
               <div className={`h-1.5 w-full ${domainMeta[project.domain].className}`} />
-              <div className="aspect-[4/3] overflow-hidden bg-surface-2">
+              <div className="aspect-[16/11] overflow-hidden bg-surface-2">
                 <img
                   src={project.cover}
                   alt={project.title}
@@ -150,26 +150,9 @@ export default function Home() {
                   className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </div>
-              <div className="p-6">
-                <div className="mb-3 flex items-center justify-between text-sm text-ink-muted">
-                  <span className="flex items-center gap-2">
-                    <DomainDot domain={project.domain} />
-                    {project.year}
-                  </span>
-                  <span>{project.category}</span>
-                </div>
-                <h3 className="font-display text-2xl font-medium text-ink">{project.title}</h3>
-                <p className="mt-2 text-base leading-relaxed text-ink-muted">{project.summary}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className={`rounded border px-3 py-1 text-sm ${domainMeta[project.domain].tagClassName}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex items-center justify-between gap-3 p-5">
+                <h3 className="font-display text-xl font-medium text-ink">{project.title}</h3>
+                <DomainDot domain={project.domain} />
               </div>
             </Link>
           ))}
