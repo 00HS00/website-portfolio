@@ -72,8 +72,8 @@ that serves static files (Vercel, Netlify, GitHub Pages, etc.). It uses
 client-side routing, so the host needs to rewrite all paths to `index.html`
 (a single-page app fallback) for direct links like `/work/clinder` to work.
 
-After deploying, update the placeholder domain in `public/robots.txt` and
-`public/sitemap.xml`.
+Live at [hamzasyed.vercel.app](https://hamzasyed.vercel.app), deployed via
+Vercel with auto-deploy on push to `master`.
 
 ## License
 
