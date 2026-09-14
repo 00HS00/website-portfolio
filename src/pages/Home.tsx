@@ -4,7 +4,6 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { featuredProjects, domainMeta } from '@/data/projects';
 import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
-import DomainDot from '@/components/DomainDot';
 import CyclingSkills from '@/components/CyclingSkills';
 import { usePageMeta } from '@/hooks/usePageMeta';
 
@@ -134,7 +133,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2">
           {featuredProjects.map((project) => (
             <Link
               key={project.slug}
@@ -150,9 +149,10 @@ export default function Home() {
                   className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </div>
-              <div className="flex items-center justify-between gap-3 p-5">
-                <h3 className="font-display text-xl font-medium text-ink">{project.title}</h3>
-                <DomainDot domain={project.domain} />
+              <div className="p-6 text-center">
+                <h3 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+                  {project.title}
+                </h3>
               </div>
             </Link>
           ))}
