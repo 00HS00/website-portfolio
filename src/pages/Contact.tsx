@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Linkedin, Twitter, ArrowUpRight } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Linkedin, ArrowUpRight } from 'lucide-react';
 import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
 import { usePageMeta } from '@/hooks/usePageMeta';
@@ -56,8 +56,6 @@ export default function Contact() {
 
   const socials = [
     { icon: Linkedin, label: 'LinkedIn', handle: site.socials.linkedin.handle, href: site.socials.linkedin.url },
-    { icon: Github, label: 'GitHub', handle: site.socials.github.handle, href: site.socials.github.url },
-    { icon: Twitter, label: 'X / Twitter', handle: site.socials.twitter.handle, href: site.socials.twitter.url },
     { icon: Mail, label: 'Email', handle: site.email, href: site.email.startsWith('[') ? '' : `mailto:${site.email}` },
   ].filter((s) => s.href);
 

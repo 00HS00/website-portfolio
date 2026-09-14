@@ -19,9 +19,7 @@ export const site = {
   photoUrl: '/photo.jpg',
 
   socials: {
-    github: { label: 'GitHub', handle: '[Add your GitHub username]', url: '' },
     linkedin: { label: 'LinkedIn', handle: 'hamza-syed', url: 'https://www.linkedin.com/in/hamza-syed' },
-    twitter: { label: 'X / Twitter', handle: '', url: '' },
   },
 
   about: {
@@ -118,6 +116,6 @@ export const site = {
     headline: "Let's connect.",
     body: "I'm always up for talking about recruiting tech, small business tools, or software/UX in general, whether that's a project, an opportunity, or just a good conversation. Reach out and I'll get back to you soon.",
     confirmation: "Message sent. I'll get back to you soon.",
-    formspreeId: '', // e.g. "abcdwxyz" from https://formspree.io, see README
+    formspreeId: 'xoeqglqq',
   },
 } as const;

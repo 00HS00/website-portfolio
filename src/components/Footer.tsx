@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Github, Linkedin, Mail, ArrowUpRight } from 'lucide-react';
+import { Linkedin, Mail, ArrowUpRight } from 'lucide-react';
 import { site } from '@/data/site';
 
 const hasEmail = site.email && !site.email.startsWith('[');
 const hasLinkedin = site.socials.linkedin.url;
-const hasGithub = site.socials.github.url;
 
 export default function Footer() {
   return (
@@ -52,19 +51,6 @@ export default function Footer() {
                     </a>
                   </li>
                 )}
-                {hasGithub && (
-                  <li>
-                    <a
-                      href={site.socials.github.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="group flex items-center gap-2 text-sm text-ink transition-colors hover:text-blue"
-                    >
-                      GitHub
-                      <ArrowUpRight size={14} className="opacity-50 group-hover:opacity-100" />
-                    </a>
-                  </li>
-                )}
                 {hasEmail && (
                   <li>
                     <a
@@ -95,17 +81,6 @@ export default function Footer() {
                 className="text-ink-muted transition-colors hover:text-blue"
               >
                 <Linkedin size={18} />
-              </a>
-            )}
-            {hasGithub && (
-              <a
-                href={site.socials.github.url}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
-                className="text-ink-muted transition-colors hover:text-blue"
-              >
-                <Github size={18} />
               </a>
             )}
             {hasEmail && (
