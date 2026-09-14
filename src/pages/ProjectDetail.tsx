@@ -71,8 +71,8 @@ export default function ProjectDetail() {
       <section className="mx-auto max-w-5xl px-6 lg:px-6">
         <div className="overflow-hidden rounded-xl border border-border bg-surface">
           <div className={`h-1.5 w-full ${domainMeta[project.domain].className}`} />
-          <div className="aspect-[16/10] overflow-hidden">
-            <img src={project.cover} alt={project.title} className="h-full w-full object-cover" />
+          <div className="aspect-[16/10] overflow-hidden bg-surface-2">
+            <img src={project.cover} alt={project.title} className="h-full w-full object-contain" />
           </div>
         </div>
       </section>

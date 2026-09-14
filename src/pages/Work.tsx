@@ -47,7 +47,7 @@ export default function Work() {
                   src={project.cover}
                   alt={project.title}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </div>
               <div className="p-6">
