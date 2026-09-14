@@ -4,10 +4,16 @@ import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
 import CyclingSkills from '@/components/CyclingSkills';
 import Timeline from '@/components/Timeline';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 const factIcons = [MapPin, GraduationCap, Compass, Hammer];
 
 export default function About() {
+  usePageMeta(
+    'About | Hamza Syed',
+    "Business Technologist based in Toronto. How I think, what I've built, and the path that got me here."
+  );
+
   return (
     <>
       {/* Hero */}

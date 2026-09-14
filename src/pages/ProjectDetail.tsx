@@ -2,10 +2,13 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight, Github } from 'lucide-react';
 import { getProjectBySlug, projects, domainMeta } from '@/data/projects';
 import DomainDot from '@/components/DomainDot';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
   const project = getProjectBySlug(slug ?? '');
+
+  usePageMeta(project ? `${project.title} | Hamza Syed` : 'Hamza Syed', project?.summary);
 
   if (!project) return <Navigate to="/work" replace />;
 

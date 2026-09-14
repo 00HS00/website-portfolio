@@ -6,8 +6,11 @@ import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
 import DomainDot from '@/components/DomainDot';
 import CyclingSkills from '@/components/CyclingSkills';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 export default function Home() {
+  usePageMeta('Hamza Syed | Business Technologist', site.tagline);
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

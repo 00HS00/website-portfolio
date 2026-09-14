@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Linkedin, Twitter, ArrowUpRight, FileText } from 'lucide-react';
 import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
@@ -20,6 +21,8 @@ const tones = {
 } as const;
 
 export default function Contact() {
+  usePageMeta('Contact | Hamza Syed', "Get in touch, whether it's a project, an opportunity, or just a good conversation.");
+
   const [status, setStatus] = useState<Status>('idle');
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 

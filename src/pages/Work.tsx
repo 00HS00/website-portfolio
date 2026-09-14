@@ -4,10 +4,16 @@ import { ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react';
 import { projects, categories, domainMeta, statusMeta, type Status } from '@/data/projects';
 import SectionTag from '@/components/SectionTag';
 import DomainDot from '@/components/DomainDot';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 const filters = ['All', ...categories];
 
 export default function Work() {
+  usePageMeta(
+    'Work | Hamza Syed',
+    'Case studies from Clinder to a butcher shop ordering platform: real problems, real builds.'
+  );
+
   const [active, setActive] = useState('All');
 
   const visible = useMemo(

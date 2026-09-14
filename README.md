@@ -1,4 +1,4 @@
-# Hamza Syed — Portfolio
+# Hamza Syed - Portfolio
 
 Personal portfolio site for [Hamza Syed](https://www.linkedin.com/in/hamza-syed), a Business Technologist studying at Toronto Metropolitan University. Built with React, TypeScript, Vite, and Tailwind CSS.
 

@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 export default function NotFound() {
+  usePageMeta('Page Not Found | Hamza Syed');
+
   return (
     <section className="flex min-h-[70vh] items-center justify-center px-6 pt-20 text-center">
       <div>
