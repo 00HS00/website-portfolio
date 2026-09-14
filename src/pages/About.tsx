@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Download, MapPin, GraduationCap, Compass, Hammer } from 'lucide-react';
+import { ArrowRight, MapPin, GraduationCap, Compass, Hammer } from 'lucide-react';
 import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
 import CyclingSkills from '@/components/CyclingSkills';
@@ -33,20 +33,7 @@ export default function About() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-6">
           <div className="grid items-center gap-14 lg:grid-cols-[1fr_320px]">
             <div>
-              <div className="flex items-center justify-between gap-4">
-                <SectionTag>About</SectionTag>
-                {site.resumeUrl && (
-                  <a
-                    href={site.resumeUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-center gap-1.5 rounded-md border border-border px-3.5 py-1.5 text-sm text-ink-muted transition-colors duration-200 hover:border-blue/40 hover:text-ink"
-                  >
-                    <Download size={14} />
-                    Resume
-                  </a>
-                )}
-              </div>
+              <SectionTag>About</SectionTag>
               <h1 className="font-display text-5xl font-medium leading-[1.08] text-ink sm:text-6xl lg:text-7xl animate-fade-up text-balance">
                 {site.about.headline}
               </h1>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Linkedin, Twitter, ArrowUpRight, FileText } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, AlertCircle, Github, Linkedin, Twitter, ArrowUpRight } from 'lucide-react';
 import { site } from '@/data/site';
 import SectionTag from '@/components/SectionTag';
 import { usePageMeta } from '@/hooks/usePageMeta';
@@ -202,24 +202,6 @@ export default function Contact() {
                   </a>
                 );
               })}
-
-              {site.resumeUrl && (
-                <a
-                  href={site.resumeUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group flex items-center gap-4 rounded-xl border border-border bg-surface p-5 transition-colors duration-200 hover:border-gold/30"
-                >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-gold/10 text-gold">
-                    <FileText size={20} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-ink">Resume</p>
-                    <p className="truncate text-sm text-ink-muted">View or download PDF</p>
-                  </div>
-                  <ArrowUpRight size={16} className="text-ink-muted transition-colors duration-200 group-hover:text-gold" />
-                </a>
-              )}
 
               <div className="rounded-xl border border-border bg-surface p-5">
                 <div className="flex items-center gap-4">

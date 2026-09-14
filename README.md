@@ -37,7 +37,6 @@ src/
   index.css     Design tokens (colors, fonts) and global styles
 public/
   projects/     Project cover images
-  resume.pdf    Downloadable resume
   photo.jpg     Headshot, used on Home and About
 ```
 
@@ -47,14 +46,13 @@ Almost everything on the site is data-driven from two files, no need to touch
 page components for routine updates:
 
 - **`src/data/site.ts`**: name, title, bio, socials, skills, principles,
-  experience timeline, resume link, and contact page copy.
+  experience timeline, and contact page copy.
 - **`src/data/projects.ts`**: each entry becomes a case-study page at
   `/work/<slug>` automatically (`summary`, `problem` / `approach` / `outcome`,
   `cover` / `gallery` images, `liveUrl` / `repoUrl`, `status`, `domain`).
 
-To swap images: replace the file at the same path (`public/photo.jpg`,
-`public/resume.pdf`, files under `public/projects/`) rather than renaming, so
-no code needs to change.
+To swap images: replace the file at the same path (`public/photo.jpg`, files
+under `public/projects/`) rather than renaming, so no code needs to change.
 
 ### Contact form
 

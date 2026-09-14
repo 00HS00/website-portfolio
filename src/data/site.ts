@@ -16,7 +16,6 @@ export const site = {
     label: 'Building & open to connect',
   },
   email: 'hamza@razr.io',
-  resumeUrl: '/resume.pdf',
   photoUrl: '/photo.jpg',
 
   socials: {
