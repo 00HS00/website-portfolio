@@ -7,6 +7,7 @@ create table if not exists time_entries (
   check_in timestamptz not null,
   check_out timestamptz,
   note text not null default '',
+  linked_tasks jsonb not null default '[]'::jsonb,   -- [{ "id": "...", "title": "..." }]
   created_at timestamptz not null default now()
 );
 

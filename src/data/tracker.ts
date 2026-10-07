@@ -34,14 +34,24 @@ export interface Comment {
   created_at: string;
 }
 
+/** A task attached to a shift. The title is a snapshot so history survives a deleted task. */
+export interface LinkedTask {
+  id: string;
+  title: string;
+}
+
 export interface TimeEntry {
   id: string;
   person: string;
   check_in: string;
   check_out: string | null;
   note: string;
+  /** added by supabase/update-3.sql, so it may be missing on an older database */
+  linked_tasks?: LinkedTask[] | null;
   created_at: string;
 }
+
+export type TaskRef = Pick<Task, 'id' | 'title' | 'status'>
 
 export type ExpenseKind = 'purchase' | 'mileage' | 'other';
 export type ExpenseStatus = 'pending' | 'reimbursed';

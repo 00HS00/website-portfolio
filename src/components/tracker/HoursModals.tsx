@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import { X } from 'lucide-react';
-import { expenseKindMeta, type ExpenseKind, type TimeEntry } from '@/data/tracker';
+import { expenseKindMeta, type ExpenseKind, type LinkedTask, type TaskRef, type TimeEntry } from '@/data/tracker';
 import type { ExpenseDraft } from '@/hooks/useHours';
+import TaskPicker from './TaskPicker';
 import { localDateKey, localTimeInput, money } from './timeHelpers';
 
 const RATE_KEY = 'tracker:kmRate';
@@ -29,11 +30,16 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
 /** Add a missed shift by hand, or fix a saved one. */
 export function EntryModal({
   entry,
+  tasks,
   onSave,
   onClose,
 }: {
   entry: TimeEntry | null;
-  onSave: (id: string | null, v: { check_in: string; check_out: string | null; note: string }) => Promise<void>;
+  tasks: TaskRef[];
+  onSave: (
+    entry: TimeEntry | null,
+    v: { check_in: string; check_out: string | null; note: string; linked: LinkedTask[] },
+  ) => Promise<void>;
   onClose: () => void;
 }) {
   const start = entry ? new Date(entry.check_in) : null;
@@ -42,6 +48,7 @@ export function EntryModal({
   const [from, setFrom] = useState(start ? localTimeInput(start) : '09:00');
   const [to, setTo] = useState(end ? localTimeInput(end) : entry ? '' : '17:00');
   const [note, setNote] = useState(entry?.note ?? '');
+  const [linked, setLinked] = useState<LinkedTask[]>(entry?.linked_tasks ?? []);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -52,10 +59,11 @@ export function EntryModal({
     if (!checkOut && !entry) return setError('Pick an end time.');
     if (checkOut && checkOut <= checkIn) return setError('The end time has to be after the start time.');
     setSaving(true);
-    await onSave(entry?.id ?? null, {
+    await onSave(entry, {
       check_in: checkIn.toISOString(),
       check_out: checkOut ? checkOut.toISOString() : null,
       note,
+      linked,
     });
     onClose();
   }
@@ -78,8 +86,19 @@ export function EntryModal({
           </div>
         </div>
         <div>
-          <label className={label} htmlFor="e-note">What did you work on?</label>
-          <textarea id="e-note" rows={3} className={field} value={note} onChange={(e) => setNote(e.target.value)} />
+          <span className={label}>What did you work on?</span>
+          <div className="space-y-2">
+            <TaskPicker tasks={tasks} value={linked} onChange={setLinked} />
+            <textarea
+              id="e-note"
+              rows={3}
+              className={field}
+              placeholder="Or type it out, or add detail to the linked tasks"
+              aria-label="Notes about what you worked on"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+            />
+          </div>
         </div>
         {error && <p className="text-sm text-danger">{error}</p>}
         <button type="button" onClick={save} disabled={saving} className="w-full rounded-lg bg-gold py-2.5 text-sm font-semibold text-bg disabled:opacity-40">

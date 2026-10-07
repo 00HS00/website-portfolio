@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { Car, Clock, Download, Eye, LogIn, LogOut, Pencil, Plus, Receipt, Trash2 } from 'lucide-react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useHours } from '@/hooks/useHours';
-import { expenseKindMeta, trackerConfig, type TimeEntry } from '@/data/tracker';
+import { expenseKindMeta, trackerConfig, type LinkedTask, type TimeEntry } from '@/data/tracker';
 import TrackerShell from '@/components/tracker/TrackerShell';
 import { EntryModal, ExpenseModal } from '@/components/tracker/HoursModals';
+import TaskPicker, { LinkedTaskChips } from '@/components/tracker/TaskPicker';
 import { Avatar } from '@/components/tracker/ui';
 import { formatDate } from '@/components/tracker/helpers';
 import {
@@ -27,6 +28,7 @@ function HoursView({ name }: { name: string }) {
   // everyone can read the owner's hours, only the owner can log them
   const isOwner = name === owner;
   const [note, setNote] = useState('');
+  const [linked, setLinked] = useState<LinkedTask[]>([]);
   const [entryModal, setEntryModal] = useState<{ entry: TimeEntry | null } | null>(null);
   const [expenseModal, setExpenseModal] = useState(false);
   const [now, setNow] = useState(() => Date.now());
@@ -43,12 +45,14 @@ function HoursView({ name }: { name: string }) {
     return () => clearInterval(id);
   }, [running]);
 
-  // keep the note box in step with the running shift
+  // keep the note and linked tasks in step with the running shift
   const openId = open?.id;
   const openNote = open?.note ?? '';
+  const openLinkedJson = JSON.stringify(open?.linked_tasks ?? []);
   useEffect(() => {
     setNote(openNote);
-  }, [openId, openNote]);
+    setLinked(JSON.parse(openLinkedJson) as LinkedTask[]);
+  }, [openId, openNote, openLinkedJson]);
 
   const duration = (e: TimeEntry) => (e.check_out ? new Date(e.check_out).getTime() : now) - new Date(e.check_in).getTime();
 
@@ -86,13 +90,14 @@ function HoursView({ name }: { name: string }) {
 
   function exportHours() {
     downloadCsv('woodlogix-hours.csv', [
-      ['Person', 'Date', 'Check in', 'Check out', 'Hours', 'Note'],
+      ['Person', 'Date', 'Check in', 'Check out', 'Hours', 'Tasks', 'Note'],
       ...entries.map((e) => [
         e.person,
         localDateKey(new Date(e.check_in)),
         formatTime(e.check_in),
         e.check_out ? formatTime(e.check_out) : '',
         e.check_out ? (duration(e) / 3600000).toFixed(2) : '',
+        (e.linked_tasks ?? []).map((l) => data.tasks.find((t) => t.id === l.id)?.title ?? l.title).join('; '),
         e.note,
       ]),
     ]);
@@ -149,11 +154,12 @@ function HoursView({ name }: { name: string }) {
                 onChange={(e) => setNote(e.target.value)}
                 aria-label="What are you working on"
               />
+              <TaskPicker tasks={data.tasks} value={linked} onChange={setLinked} />
               <div className="flex flex-wrap gap-3">
                 {open ? (
                   <button
                     type="button"
-                    onClick={() => data.checkOut(open, note)}
+                    onClick={() => data.checkOut(open, note, linked)}
                     className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-danger px-5 py-2.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
                   >
                     <LogOut size={17} /> Check out
@@ -162,8 +168,9 @@ function HoursView({ name }: { name: string }) {
                   <button
                     type="button"
                     onClick={() => {
-                      void data.checkIn(note);
+                      void data.checkIn(note, linked);
                       setNote('');
+                      setLinked([]);
                     }}
                     className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-live px-5 py-2.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
                   >
@@ -236,7 +243,14 @@ function HoursView({ name }: { name: string }) {
                     <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${e.check_out ? 'bg-gold/15 text-gold' : 'bg-live/15 text-live'}`}>
                       {e.check_out ? formatDuration(duration(e)) : `${formatDuration(duration(e))} so far`}
                     </span>
-                    <p className="min-w-0 flex-1 text-sm text-ink-muted">{e.note || <span className="opacity-60">No note</span>}</p>
+                    <div className="min-w-0 flex-1 basis-64 space-y-1.5">
+                      <LinkedTaskChips linked={e.linked_tasks ?? []} tasks={data.tasks} />
+                      {e.note ? (
+                        <p className="text-sm text-ink-muted">{e.note}</p>
+                      ) : (
+                        !e.linked_tasks?.length && <p className="text-sm text-ink-muted opacity-60">No note</p>
+                      )}
+                    </div>
                     {isOwner && (
                       <div className="flex items-center gap-1">
                         <button
@@ -342,7 +356,9 @@ function HoursView({ name }: { name: string }) {
         </div>
       )}
 
-      {entryModal && <EntryModal entry={entryModal.entry} onSave={data.saveEntry} onClose={() => setEntryModal(null)} />}
+      {entryModal && (
+        <EntryModal entry={entryModal.entry} tasks={data.tasks} onSave={data.saveEntry} onClose={() => setEntryModal(null)} />
+      )}
       {expenseModal && <ExpenseModal onSave={data.addExpense} onClose={() => setExpenseModal(false)} />}
     </>
   );
