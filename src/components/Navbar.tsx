@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { site } from '@/data/site';
+import { useTheme } from '@/hooks/useTheme';
 
 const links = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
   { to: '/work', label: 'Work' },
+  { to: '/tracker', label: 'Tracker' },
   { to: '/contact', label: 'Contact' },
 ];
 
@@ -14,6 +16,17 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggle } = useTheme();
+  const themeButton = (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+      className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-ink-muted transition-colors hover:border-gold/60 hover:text-gold"
+    >
+      {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+    </button>
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -36,9 +49,9 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-6">
         <Link to="/" className="group flex items-center gap-2.5">
           <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <circle cx="12" cy="16" r="8.5" stroke="#C9A15A" strokeWidth="2" />
-            <circle cx="20" cy="16" r="8.5" stroke="#5B8DEF" strokeWidth="2" />
-            <circle cx="16" cy="16" r="1.6" fill="#EDEFF3" />
+            <circle cx="12" cy="16" r="8.5" className="stroke-gold" strokeWidth="2" />
+            <circle cx="20" cy="16" r="8.5" className="stroke-blue" strokeWidth="2" />
+            <circle cx="16" cy="16" r="1.6" className="fill-ink" />
           </svg>
           <span className="font-display text-lg font-medium text-ink">{site.name}</span>
         </Link>
@@ -68,21 +81,27 @@ export default function Navbar() {
           ))}
         </div>
 
-        <Link
-          to="/contact"
-          className="hidden rounded-md border border-border bg-surface-2 px-4 py-2 text-sm font-medium text-ink transition-colors duration-200 hover:border-blue/50 hover:text-blue md:block"
-        >
-          Get in touch
-        </Link>
+        <div className="hidden items-center gap-3 md:flex">
+          {themeButton}
+          <Link
+            to="/contact"
+            className="rounded-md border border-border bg-surface-2 px-4 py-2 text-sm font-medium text-ink transition-colors duration-200 hover:border-blue/50 hover:text-blue"
+          >
+            Get in touch
+          </Link>
+        </div>
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-ink md:hidden"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-        >
-          {open ? <X size={17} /> : <Menu size={17} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {themeButton}
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-ink"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            {open ? <X size={17} /> : <Menu size={17} />}
+          </button>
+        </div>
       </nav>
 
       <div

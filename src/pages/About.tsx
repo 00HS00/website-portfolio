@@ -26,8 +26,8 @@ export default function About() {
           className="pointer-events-none absolute -right-40 -top-24 hidden opacity-[0.07] lg:block"
           width="620" height="620" viewBox="0 0 620 620" fill="none" aria-hidden="true"
         >
-          <circle cx="230" cy="310" r="220" stroke="#C9A15A" strokeWidth="2" />
-          <circle cx="390" cy="310" r="220" stroke="#5B8DEF" strokeWidth="2" />
+          <circle cx="230" cy="310" r="220" className="stroke-gold" strokeWidth="2" />
+          <circle cx="390" cy="310" r="220" className="stroke-blue" strokeWidth="2" />
         </svg>
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-6">

@@ -1,18 +1,23 @@
 /** @type {import('tailwindcss').Config} */
+// Colors are CSS variables (RGB channels) defined in src/index.css so the dark and light themes share one set of classes.
+const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        bg: '#0B0E14',
-        surface: '#12151D',
-        'surface-2': '#191D27',
-        border: '#262B38',
-        ink: '#EDEFF3',
-        'ink-muted': '#8D94A5',
-        gold: '#C9A15A',
-        blue: '#5B8DEF',
-        live: '#4ADE80',
+        bg: token('bg'),
+        surface: token('surface'),
+        'surface-2': token('surface-2'),
+        border: token('border'),
+        ink: token('text'),
+        'ink-muted': token('text-muted'),
+        gold: token('gold'),
+        blue: token('blue'),
+        live: token('live'),
+        danger: token('danger'),
+        warn: token('warn'),
       },
       fontFamily: {
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],

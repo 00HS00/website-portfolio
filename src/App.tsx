@@ -5,6 +5,8 @@ import About from '@/pages/About';
 import Work from '@/pages/Work';
 import ProjectDetail from '@/pages/ProjectDetail';
 import Contact from '@/pages/Contact';
+import Tracker from '@/pages/Tracker';
+import Hours from '@/pages/Hours';
 import NotFound from '@/pages/NotFound';
 
 export default function App() {
@@ -17,6 +19,8 @@ export default function App() {
           <Route path="/work" element={<Work />} />
           <Route path="/work/:slug" element={<ProjectDetail />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/tracker" element={<Tracker />} />
+          <Route path="/tracker/hours" element={<Hours />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

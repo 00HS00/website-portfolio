@@ -3,20 +3,40 @@
 @tailwind utilities;
 
 @layer base {
+  /* RGB channels so Tailwind opacity modifiers (bg-gold/10) work */
   :root {
-    --bg: #0b0e14;
-    --surface: #12151d;
-    --surface-2: #191d27;
-    --border: #262b38;
-    --text: #edeff3;
-    --text-muted: #8d94a5;
-    --gold: #c9a15a;
-    --blue: #5b8def;
-    --live: #4ade80;
+    color-scheme: dark;
+    --bg: 11 14 20;
+    --surface: 18 21 29;
+    --surface-2: 25 29 39;
+    --border: 38 43 56;
+    --text: 237 239 243;
+    --text-muted: 141 148 165;
+    --gold: 201 161 90;
+    --blue: 91 141 239;
+    --live: 74 222 128;
+    --danger: 248 113 113;
+    --warn: 251 146 60;
+  }
+
+  /* Warm off-white light theme, deliberately not pure white */
+  :root[data-theme='light'] {
+    color-scheme: light;
+    --bg: 241 237 229;
+    --surface: 250 248 243;
+    --surface-2: 232 227 217;
+    --border: 214 207 194;
+    --text: 31 36 48;
+    --text-muted: 98 105 120;
+    --gold: 138 99 23;
+    --blue: 47 98 201;
+    --live: 22 128 61;
+    --danger: 190 52 52;
+    --warn: 194 87 12;
   }
 
   * {
-    border-color: var(--border);
+    border-color: rgb(var(--border));
   }
 
   html {
@@ -25,19 +45,19 @@
   }
 
   body {
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: rgb(var(--bg));
+    color: rgb(var(--text));
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: var(--gold);
-    color: #0b0e14;
+    background-color: rgb(var(--gold));
+    color: rgb(var(--bg));
   }
 
   :focus-visible {
-    outline: 2px solid var(--blue);
+    outline: 2px solid rgb(var(--blue));
     outline-offset: 2px;
     border-radius: 2px;
   }
@@ -58,14 +78,52 @@
   }
 
   .text-gradient {
-    background: linear-gradient(90deg, var(--gold), var(--blue));
+    background: linear-gradient(90deg, rgb(var(--gold)), rgb(var(--blue)));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
   .bg-gradient-duotone {
-    background: linear-gradient(90deg, var(--gold), var(--blue));
+    background: linear-gradient(90deg, rgb(var(--gold)), rgb(var(--blue)));
+  }
+
+  /* KITT scanner strip, ported from woodlogix-project-status. Marks tasks due today. */
+  .kitt-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 9px;
+    background: #000;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .kitt-glow {
+    position: absolute;
+    top: 0;
+    width: 67%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(120, 0, 0, 0.25) 8%,
+      rgba(160, 0, 0, 0.55) 20%,
+      #ff1800 42%,
+      #ff7755 50%,
+      #ff1800 58%,
+      rgba(160, 0, 0, 0.55) 80%,
+      rgba(120, 0, 0, 0.25) 92%,
+      transparent 100%
+    );
+    animation: kittPing 1.4s ease-in-out infinite alternate;
+    box-shadow: 0 0 8px 3px rgba(255, 24, 0, 0.6);
+  }
+  @keyframes kittPing {
+    0% { left: -67%; }
+    100% { left: 100%; }
   }
 
   .animate-fade-up {
@@ -87,6 +145,7 @@
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-up,
     .animate-fade-in,
+    .kitt-glow,
     .animate-pulse,
     .animate-bounce {
       animation: none !important;
