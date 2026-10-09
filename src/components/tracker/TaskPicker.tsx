@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Check, ChevronDown, Link2, Search, X } from 'lucide-react';
 import { statusMeta, type LinkedTask, type Status, type TaskRef } from '@/data/tracker';
 
@@ -10,13 +11,21 @@ export function TaskChip({
   title,
   status,
   onRemove,
+  href,
 }: {
   title: string;
   status?: Status;
   onRemove?: () => void;
+  /** When set, the label links to the task on the Tasks tab */
+  href?: string;
 }) {
   const m = status ? statusMeta[status] : null;
   const done = status === 'done';
+  const label = href ? (
+    <Link to={href} className="truncate hover:text-gold hover:underline">{title}</Link>
+  ) : (
+    <span className="truncate">{title}</span>
+  );
   return (
     <span
       className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
@@ -25,7 +34,7 @@ export function TaskChip({
       title={m ? `${title} (${m.label})` : `${title} (task no longer exists)`}
     >
       {done ? <Check size={12} className="shrink-0" /> : <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${m?.dot ?? 'bg-ink-muted/50'}`} />}
-      <span className="truncate">{title}</span>
+      {label}
       {onRemove && (
         <button
           type="button"
@@ -47,7 +56,14 @@ export function LinkedTaskChips({ linked, tasks }: { linked: LinkedTask[]; tasks
     <div className="flex flex-wrap gap-1.5">
       {linked.map((l) => {
         const live = tasks.find((t) => t.id === l.id);
-        return <TaskChip key={l.id} title={live?.title ?? l.title} status={live?.status} />;
+        return (
+          <TaskChip
+            key={l.id}
+            title={live?.title ?? l.title}
+            status={live?.status}
+            href={live ? `/tracker?task=${encodeURIComponent(live.id)}` : undefined}
+          />
+        );
       })}
     </div>
   );

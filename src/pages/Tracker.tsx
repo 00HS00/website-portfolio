@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Download, KanbanSquare, LayoutList, Plus, Search } from 'lucide-react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useTasks } from '@/hooks/useTasks';
@@ -42,6 +43,16 @@ function TasksView({ name }: { name: string }) {
   const [fStatus, setFStatus] = useState<'' | Status>('');
   const [fPriority, setFPriority] = useState<'' | Priority>('');
   const [open, setOpen] = useState<{ task: Task | null; status: Status } | null>(null);
+
+  // /tracker?task=<id> (from a linked task on the hours page) opens that task once tasks have loaded
+  const [params, setParams] = useSearchParams();
+  const wanted = params.get('task');
+  useEffect(() => {
+    if (!wanted || data.loading) return;
+    const task = data.tasks.find((t) => t.id === wanted);
+    if (task) setOpen({ task, status: task.status });
+    setParams({}, { replace: true });
+  }, [wanted, data.loading, data.tasks, setParams]);
 
   // "New" marks tasks someone else added since this browser last visited
   const [lastVisit] = useState(() => store(VISIT_KEY) ?? '');
