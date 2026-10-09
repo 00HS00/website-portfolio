@@ -43,14 +43,21 @@ function TasksView({ name }: { name: string }) {
   const [fStatus, setFStatus] = useState<'' | Status>('');
   const [fPriority, setFPriority] = useState<'' | Priority>('');
   const [open, setOpen] = useState<{ task: Task | null; status: Status } | null>(null);
+  const [focusId, setFocusId] = useState<string | null>(null);
 
   // /tracker?task=<id> (from a linked task on the hours page) opens that task once tasks have loaded
   const [params, setParams] = useSearchParams();
   const wanted = params.get('task');
   useEffect(() => {
     if (!wanted || data.loading) return;
-    const task = data.tasks.find((t) => t.id === wanted);
-    if (task) setOpen({ task, status: task.status });
+    if (data.tasks.some((t) => t.id === wanted)) {
+      // show the list with the task's dropdown open, clearing filters that could hide it
+      setView('list');
+      setSearch('');
+      setFStatus('');
+      setFPriority('');
+      setFocusId(wanted);
+    }
     setParams({}, { replace: true });
   }, [wanted, data.loading, data.tasks, setParams]);
 
@@ -208,6 +215,7 @@ function TasksView({ name }: { name: string }) {
           isNew={isNew}
           onOpen={(task) => setOpen({ task, status: task.status })}
           handlers={handlers}
+          focusId={focusId}
         />
       ) : (
         <KanbanBoard

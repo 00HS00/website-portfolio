@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDown, PanelRight } from 'lucide-react';
 import { priorityMeta, statusMeta, statusOrder, type Status, type Subtask, type Task } from '@/data/tracker';
 import { DueLabel, KittStrip, NewBadge, PriorityPill, Avatar } from './ui';
@@ -12,6 +12,8 @@ interface Props {
   /** opens the side panel */
   onOpen: (t: Task) => void;
   handlers: QuickHandlers;
+  /** task to expand and scroll to */
+  focusId?: string | null;
 }
 
 const COLS =
@@ -52,6 +54,7 @@ function Row({
   const dueToday = isDueToday(t);
   return (
     <div
+      id={`task-row-${t.id}`}
       className={`relative overflow-hidden rounded-xl border bg-surface shadow-sm transition-all hover:border-gold/50 hover:shadow-md ${
         dueToday ? 'border-danger/60' : expanded ? 'border-gold/40' : 'border-border'
       } ${isDone && !expanded ? 'opacity-80' : ''}`}
@@ -151,9 +154,18 @@ function Row({
   );
 }
 
-export default function TaskTable({ tasks, subtasks, isNew, onOpen, handlers }: Props) {
+export default function TaskTable({ tasks, subtasks, isNew, onOpen, handlers, focusId }: Props) {
   // rows start collapsed, the dropdown is the default way to interact
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  // a task linked from the hours page opens its dropdown and scrolls into view
+  useEffect(() => {
+    if (!focusId) return;
+    setExpanded((prev) => new Set(prev).add(focusId));
+    requestAnimationFrame(() =>
+      document.getElementById(`task-row-${focusId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+    );
+  }, [focusId]);
   const toggle = (id: string) =>
     setExpanded((prev) => {
       const next = new Set(prev);
